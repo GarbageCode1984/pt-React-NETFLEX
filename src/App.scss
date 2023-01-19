@@ -1,6 +1,14 @@
+a {
+    text-decoration: none;
+}
+
 .navTop {
     .nav-item {
-    }
-    &:hover {
+        color: #fff;
+        margin-left: 20px;
+        transition: 0.3s ease-out;
+        &:hover {
+            opacity: 0.5;
+        }
     }
 }

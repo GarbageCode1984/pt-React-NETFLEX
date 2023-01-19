@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function Home() {
+    useEffect(() => {}, []);
     return <div>Home</div>;
 }
 
