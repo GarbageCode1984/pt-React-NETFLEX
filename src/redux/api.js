@@ -7,22 +7,22 @@ const api = axios.create({
 
 api.interceptors.request.use(
     function (config) {
-        console.log("request 시작", config);
+        // console.log("request 시작", config);
         return config;
     },
     function (error) {
-        console.log("에러 확인", error);
+        // console.log("에러 확인", error);
         return Promise.reject(error);
     }
 );
 
 api.interceptors.response.use(
     function (response) {
-        console.log("response 확인", response);
+        // console.log("response 확인", response);
         return response;
     },
     function (error) {
-        console.log("response 에러 확인", error);
+        // console.log("response 에러 확인", error);
         return Promise.reject(error);
     }
 );

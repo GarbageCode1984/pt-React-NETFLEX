@@ -1,25 +1,31 @@
 import api from "../api";
+const APIkey = process.env.REACT_APP_APIKEY;
 
 function getMovies() {
     return async (dispatch) => {
         const popularMovieApi = await api.get(
-            "/movie/popular?api_key=<<api_key>>&language=en-US&page=1"
+            `/movie/popular?api_key=${APIkey}&language=en-US&page=1`
         );
+        const topRatedMovieApi = await api.get(
+            `/movie/top_rated?api_key=${APIkey}&language=en-US&page=1`
+        );
+        const upcomingMovieApi = await api.get(
+            `/movie/upcoming?api_key=${APIkey}&language=en-US&page=1`
+        );
+
+        let [popularMovies, topRatedMovies, upcomingMovies] = await Promise.all(
+            [popularMovieApi, topRatedMovieApi, upcomingMovieApi]
+        );
+
+        dispatch({
+            type: "GET_MOVIE_SUCCESS",
+            payload: {
+                popularMovies: popularMovies.data,
+                topRatedMovies: topRatedMovies.data,
+                upcomingMovies: upcomingMovies.data,
+            },
+        });
     };
-    /* let url =
-            "https://api.themoviedb.org/3/movie/popular?api_key=<<api_key>>&language=en-US&page=1";
-        let response = await fetch(url);
-        let data = await response.json();
-
-        let url2 =
-            "https://api.themoviedb.org/3/movie/top_rated?api_key=<<api_key>>&language=en-US&page=1";
-        let response2 = await fetch(url2);
-        let data2 = await response2.json();
-
-        let url3 =
-            "https://api.themoviedb.org/3/movie/upcoming?api_key=<<api_key>>&language=en-US&page=1";
-        let response3 = await fetch(url3);
-        let data3 = await response3.json(); */
 }
 
 export const movieAction = { getMovies };
