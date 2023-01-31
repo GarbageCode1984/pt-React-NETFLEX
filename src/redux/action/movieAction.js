@@ -42,4 +42,6 @@ function getMovies() {
     };
 }
 
+function getDetailMovies(id) {}
+
 export const movieAction = { getMovies };

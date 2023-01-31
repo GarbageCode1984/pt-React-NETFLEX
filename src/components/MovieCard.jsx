@@ -1,11 +1,19 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Badge from "react-bootstrap/Badge";
+import { useNavigate } from "react-router-dom";
 
 function MovieCard({ item }) {
     const { genreList } = useSelector((state) => state.movie);
+    const navigate = useNavigate();
+
+    const gotoDetail = () => {
+        navigate(`/movies/${item.id}`);
+    };
+
     return (
         <div
+            onClick={gotoDetail}
             className="slide-card"
             style={{
                 backgroundImage: `url(
@@ -23,8 +31,11 @@ function MovieCard({ item }) {
                     ))}
                 </p>
                 <div className="card-infoSub">
-                    <span></span>
-                    <span></span>
+                    <span className="star">⭐ {item.vote_average}</span>
+                    <span className={item.abult ? "r-rated" : "g-rated"}>
+                        {" "}
+                        {item.abult ? "R-rated" : "G-rated"}
+                    </span>
                 </div>
             </div>
         </div>
