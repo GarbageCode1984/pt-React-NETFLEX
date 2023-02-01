@@ -42,6 +42,23 @@ function getMovies() {
     };
 }
 
-function getDetailMovies(id) {}
+function getDetailMovies(id) {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: "GET_D_MOVIE_REQUEST" });
+            const detailMovieApi = await api.get(
+                `/movie/${id}?api_key=${APIkey}&language=en-US`
+            );
+            let [detailMovies] = await Promise.all([detailMovieApi]);
+            console.log("detailMovies", detailMovies);
+            dispatch({
+                type: "GET_D_MOVIE_SUCCESS",
+                payload: { detailMovies: detailMovies.data },
+            });
+        } catch (error) {
+            dispatch({ type: "GET_D_MOVIE_FAIL" });
+        }
+    };
+}
 
-export const movieAction = { getMovies };
+export const movieAction = { getMovies, getDetailMovies };
