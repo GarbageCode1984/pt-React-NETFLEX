@@ -3,7 +3,7 @@ import React from "react";
 import { Container, Row, Col, Badge } from "react-bootstrap";
 import Trailer from "./Trailer";
 
-function MovieExplain({ item }) {
+const MovieExplain = ({ item, videoId }) => {
     return (
         <div>
             <Container>
@@ -25,22 +25,23 @@ function MovieExplain({ item }) {
                         <p>{item.tagline}</p>
                         <div>
                             <span className="star">⭐ {item.vote_average}</span>
-                            <span> 👥 {item.popularity} </span>
+                            <span>👥 {item.popularity} </span>
                             <span
                                 className={item.adult ? "r-rated" : "g-rated"}
                             >
-                                {item.adult ? "💖 R-rated" : "✔️ G-rated"}
+                                {item.adult ? "🔺 R-rated" : "✔️ G-rated"}
                             </span>
                         </div>
+
                         <div className="detail-overview">{item.overview}</div>
                         <div>
-                            <Trailer />
+                            <Trailer item={videoId} />
                         </div>
                     </Col>
                 </Row>
             </Container>
         </div>
     );
-}
+};
 
 export default MovieExplain;

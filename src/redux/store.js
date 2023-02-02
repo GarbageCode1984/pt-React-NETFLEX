@@ -1,11 +1,8 @@
-import { legacy_createStore as createStore, applyMiddleware } from "redux";
-import rootReducer from "./reducers";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { configureStore } from "@reduxjs/toolkit";
+import movieReducer from "./reducers/movieReducer";
 
-let store = createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
-);
+const store = configureStore({
+    reducer: { movie: movieReducer },
+});
 
 export default store;

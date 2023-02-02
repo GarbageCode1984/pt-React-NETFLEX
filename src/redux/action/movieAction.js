@@ -1,21 +1,25 @@
+//미들웨어 부분 toolkit
+
 import api from "../api";
+import { movieActions } from "../reducers/movieReducer";
+
 const APIkey = process.env.REACT_APP_APIKEY;
 
 function getMovies() {
     return async (dispatch) => {
         try {
-            dispatch({ type: "GET_MOVIE_REQUEST" });
+            dispatch(movieActions.getMoviesRequest());
 
-            const popularMovieApi = await api.get(
+            const popularMovieApi = api.get(
                 `/movie/popular?api_key=${APIkey}&language=en-US&page=1`
             );
-            const topRatedMovieApi = await api.get(
+            const topRatedMovieApi = api.get(
                 `/movie/top_rated?api_key=${APIkey}&language=en-US&page=1`
             );
-            const upcomingMovieApi = await api.get(
+            const upcomingMovieApi = api.get(
                 `/movie/upcoming?api_key=${APIkey}&language=en-US&page=1`
             );
-            const genreApi = await api.get(
+            const genreApi = api.get(
                 `/genre/movie/list?api_key=${APIkey}&language=en-US`
             );
 
@@ -27,38 +31,46 @@ function getMovies() {
                     genreApi,
                 ]);
 
-            dispatch({
-                type: "GET_MOVIE_SUCCESS",
-                payload: {
+            dispatch(
+                movieActions.getMainMovies({
                     popularMovies: popularMovies.data,
                     topRatedMovies: topRatedMovies.data,
                     upcomingMovies: upcomingMovies.data,
                     genreList: genreList.data.genres,
-                },
-            });
+                })
+            );
         } catch (error) {
-            dispatch({ type: "GET_MOVIE_FAIL" });
+            dispatch(movieActions.getMoviesFailure());
         }
     };
 }
 
-function getDetailMovies(id) {
+function getMoviesDetail(id) {
     return async (dispatch) => {
         try {
-            dispatch({ type: "GET_D_MOVIE_REQUEST" });
-            const detailMovieApi = await api.get(
+            dispatch(movieActions.getMoviesRequest());
+
+            const detailMovieApi = api.get(
                 `/movie/${id}?api_key=${APIkey}&language=en-US`
             );
-            let [detailMovies] = await Promise.all([detailMovieApi]);
-            console.log("detailMovies", detailMovies);
-            dispatch({
-                type: "GET_D_MOVIE_SUCCESS",
-                payload: { detailMovies: detailMovies.data },
-            });
+            const trailerVideoApi = api.get(
+                `/movie/${id}/videos?api_key=${APIkey}&language=en-US`
+            );
+
+            let [detailMovies, trailerVideo] = await Promise.all([
+                detailMovieApi,
+                trailerVideoApi,
+            ]);
+            dispatch(
+                movieActions.getDetailMovies({
+                    detailMovies: detailMovies.data,
+                    trailerVideo: trailerVideo.data,
+                })
+            );
         } catch (error) {
-            dispatch({ type: "GET_D_MOVIE_FAIL" });
+            dispatch(movieActions.getMoviesFailure());
         }
     };
 }
 
-export const movieAction = { getMovies, getDetailMovies };
+export const movieAction = { getMovies, getMoviesDetail };

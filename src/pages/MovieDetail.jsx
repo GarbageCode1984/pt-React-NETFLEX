@@ -1,38 +1,37 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import FadeLoader from "react-spinners/FadeLoader";
 import { movieAction } from "../redux/action/movieAction";
+import MoonLoader from "react-spinners/MoonLoader";
 import MovieExplain from "../components/MovieExplain";
-import Footer from "../components/Footer";
 
-function MovieDetail() {
+const MovieDetail = () => {
     const { id } = useParams();
-    const { detailMovies, loading } = useSelector((state) => state.movie);
+    const { detailMovies, loading, trailerVideo } = useSelector(
+        (state) => state.movie
+    );
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(movieAction.getDetailMovies(id));
+        dispatch(movieAction.getMoviesDetail(id));
+        window.scrollTo(0, 0);
     }, []);
 
     if (loading) {
         return (
             <div className="loader-container">
-                <FadeLoader color="white" loading={loading} size={150} />
+                <MoonLoader color="white" loading={loading} size={150} />
             </div>
         );
     }
-
     return (
         <div>
-            {console.log("detailMovies", detailMovies)}
-            <MovieExplain item={detailMovies} />
+            <MovieExplain item={detailMovies} videoId={trailerVideo} />
             <br />
             <br />
-            <h1>영화 리뷰 넣을 곳</h1>
-            <Footer />
+            <h1>영화 리뷰들 넣을곳!!</h1>
         </div>
     );
-}
+};
 
 export default MovieDetail;
